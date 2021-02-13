@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\BarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::get('/', function () {
 });
 
 Route::get('/home/halo', [HomeController::class, 'halo']);
+Route::resource('barang', BarangController::class);
+// Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);
