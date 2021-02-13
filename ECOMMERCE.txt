@@ -9,12 +9,13 @@ ECOMMERCE
 //- keranjang (id_barang, jumlah_pesanan, jumlah_harga, 
     customer_id)
 //- Kategori (nama, deskripsi, induk_kategori)
-//- Chat/Message (id_customer, isi_pesan, tanggal_waktu, 
+//- Chat/Message (id_customer, isi_pesan, tanggal_waktu (datetime), 
     id_chat_previous, chat_status) 
 //- Review/rating (ulasan, customer_id, barang_id, rating)
 //- Foto Review/Rating (id_review, url_foto)
 
-- Transaksi/Invoice (jumlah_transaksi, kode_transaksi, metode_pembayaran, 
+- Transaksi/Invoice (jumlah_transaksi, kode_transaksi, 
+    metode_pembayaran, 
     kurir, ongkir, id_keranjang, no_resi, waktu_sampai, 
     id_customer)
 - invoice_barang (id_invoice, id_barang, id_customer, 
