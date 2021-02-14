@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BandaraController;
+use App\Http\Controllers\PenerbanganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,4 +25,5 @@ Route::get('/home/halo', [HomeController::class, 'halo']);
 // Route::post('/home/store', [HomeController::class, 'halo']);
 Route::resource('barang', BarangController::class);
 Route::resource('bandara', BandaraController::class);
+Route::resource('penerbangan', PenerbanganController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);
