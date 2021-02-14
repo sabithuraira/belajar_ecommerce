@@ -13,10 +13,10 @@ Daftar Barang
     <div class="col-sm-12">
         <table class="table table-bordered">
             <tr>
-                <th>Kode Barang</th>
-                <th>Nama</th>
-                <th>Harga</th>
-                <th>Jumlah</th>
+                <th>{{ $model->attributes()['kode_barang'] }}</th>
+                <th>{{ $model->attributes()['nama'] }}</th>
+                <th>{{ $model->attributes()['harga'] }}</th>
+                <th>{{ $model->attributes()['jumlah'] }}</th>
                 <th class="text-center" colspan="2">Aksi</th>
             </tr>
             @foreach($datas as $value)
