@@ -20,5 +20,6 @@ Route::get('/', function () {
 });
 
 Route::get('/home/halo', [HomeController::class, 'halo']);
+// Route::post('/home/store', [HomeController::class, 'halo']);
 Route::resource('barang', BarangController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);
