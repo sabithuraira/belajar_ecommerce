@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Barang;
+use App\Http\Requests\BarangRequest;
 
 class BarangController extends Controller
 {
@@ -40,7 +41,7 @@ class BarangController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BarangRequest $request)
     {
         $model= new Barang;
         $model->kode_barang =$request->get('kode_barang');
@@ -89,7 +90,7 @@ class BarangController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BarangRequest $request, $id)
     {
         $model= Barang::find($id);
         $model->kode_barang =$request->get('kode_barang');
