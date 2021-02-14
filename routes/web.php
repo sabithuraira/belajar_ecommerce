@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BandaraController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,5 @@ Route::get('/', function () {
 Route::get('/home/halo', [HomeController::class, 'halo']);
 // Route::post('/home/store', [HomeController::class, 'halo']);
 Route::resource('barang', BarangController::class);
+Route::resource('bandara', BandaraController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);

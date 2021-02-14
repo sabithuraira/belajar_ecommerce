@@ -38,10 +38,7 @@
             @foreach ($errors->get('jumlah') as $msg)
                 <p class="text-danger">{{ $msg }}</p>
             @endforeach
-        </div>
-        
-        
-        
+        </div> 
     </div>
 </div>
 
