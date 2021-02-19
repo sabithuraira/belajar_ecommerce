@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BandaraController;
 use App\Http\Controllers\PenerbanganController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,5 @@ Route::get('/home/halo', [HomeController::class, 'halo']);
 Route::resource('barang', BarangController::class);
 Route::resource('bandara', BandaraController::class);
 Route::resource('penerbangan', PenerbanganController::class);
+Route::resource('invoice', InvoiceController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);

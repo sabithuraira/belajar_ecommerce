@@ -184,6 +184,13 @@
           </li>
           
           <li class="nav-item">
+            <a href="{{ url('invoice') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>Invoice</p>
+            </a>
+          </li>
+          
+          <li class="nav-item">
             <a href="{{ url('bandara') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>Bandara</p>
