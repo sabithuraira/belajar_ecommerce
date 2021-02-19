@@ -8,6 +8,7 @@ use App\Http\Controllers\PenerbanganController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,5 @@ Route::resource('penerbangan', PenerbanganController::class);
 Route::resource('invoice', InvoiceController::class);
 Route::resource('keranjang', KeranjangController::class);
 Route::resource('kategori', KategoriController::class);
+Route::resource('message', MessageController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);

@@ -205,6 +205,13 @@
           </li>
           
           <li class="nav-item">
+            <a href="{{ url('message') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>Message</p>
+            </a>
+          </li>
+          
+          <li class="nav-item">
             <a href="{{ url('bandara') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>Bandara</p>
