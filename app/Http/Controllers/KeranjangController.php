@@ -31,6 +31,8 @@ class KeranjangController extends Controller
     public function create()
     {
         $model = new Keranjang;
+        //list_barang dipakai untuk menampilkan 
+        //pilihan semua barang pada form
         $list_barang = Barang::all(); //select & barang
         return view('keranjang.create', compact(
             'model', 'list_barang'
@@ -49,8 +51,13 @@ class KeranjangController extends Controller
         $model->id_barang = $request->get('id_barang');
         $model->jumlah_pesanan = $request->get('jumlah_pesanan');
 
+        //kita akan memanggil data pada tabel barang
+        //sesuai dengan 'id_barang' yang dipilih pada form
         $barang = Barang::find($model->id_barang);
+        //kemudian membuat sebuah variabel 'total_harga' yang 
+        //otomatis diambil dari harga barang dan jumlah pesanan
         $total_harga = $barang->harga * $model->jumlah_pesanan;
+        //selanjutnya isian jumlah_harga dibuat otomatis dari total_harga
         $model->jumlah_harga = $total_harga;
 
         $model->id_customer = $request->get('id_customer');
