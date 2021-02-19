@@ -23,7 +23,16 @@ Daftar Keranjang
             @foreach($datas as $key=>$value)
                 <tr>
                     <td>{{ $key+1 }}</td>
-                    <td>{{ $value->barang->nama }}</td>
+                    <!---  
+                        pada kode berikut, kita menampilkan field dari relasi barang
+                        - sebelumnya telah dibuat fungsi barang(), sebagai relasi ke tabel barang
+                        - melalui field "barang_id"
+                        - dalam kasus ini, kita dapat memanggil fungsi barang seperti contoh di bawah
+                        - fungsi barang merupakan model barang, sehingga dari fungsi tersebut
+                        - kita juga bisa memanggil field dari tabel barang, 
+                        - pada contoh kita memanggil field "nama" yang terdapat pada tabel "barang"
+                    -->
+                    <td>{{ $value->barang->kode_barang }} - {{ $value->barang->nama }}</td>
                     <td>{{ $value->jumlah_pesanan }}</td>
                     <td>{{ $value->jumlah_harga }}</td>
                     <td>{{ $value->id_customer }}</td>
