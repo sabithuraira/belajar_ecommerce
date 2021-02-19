@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BandaraController;
 use App\Http\Controllers\PenerbanganController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\KeranjangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,4 +29,5 @@ Route::resource('barang', BarangController::class);
 Route::resource('bandara', BandaraController::class);
 Route::resource('penerbangan', PenerbanganController::class);
 Route::resource('invoice', InvoiceController::class);
+Route::resource('keranjang', KeranjangController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);
