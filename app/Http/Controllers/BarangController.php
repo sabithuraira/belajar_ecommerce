@@ -19,10 +19,14 @@ class BarangController extends Controller
     {
         $model = new Barang;
         // $datas = Barang::all(); //SELECT * FROM barang
-
         //untuk menangkap isian kata kunci pencarian
         $keyword = $request->get('search');
 
+        //jika pada akhiran menggunakan ->get(), maka semua data akan tampil
+        //hal ini jadi tidak efektif jika data mencapai ribuan, karena 
+        //membebani aplikasi
+        //untuk itu gunakan ->paginate(), agar data yang ditampilkan dapat dibatasi
+        //proses menampilkan data selanjutnya juga dapat memilih pada halaman paging
         $datas = Barang::where('kode_barang', 'LIKE', '%' . $keyword . '%')
             ->orWhere('nama', 'LIKE', '%' . $keyword . '%')
             ->orWhere('deskripsi', 'LIKE', '%' . $keyword . '%')
