@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Penerbangan;
 use App\Models\Bandara;
+use App\Models\Penumpang;
 
 class PenerbanganController extends Controller
 {
@@ -20,6 +21,28 @@ class PenerbanganController extends Controller
         return view('penerbangan.index', compact(
             'datas', 'model'
         ));
+    }
+
+    public function tambah_penumpang($id){
+        $penerbangan = Penerbangan::find($id);
+        $model = new Penumpang;
+
+        return view('penerbangan.tambah_penumpang', compact(
+            'penerbangan', 'model'
+        ));
+    }
+
+    public function store_penumpang(Request $request, $id){
+        $model = new Penumpang;
+        $model->penerbangan_id = $id;
+        $model->nama = $request->get('nama');
+        $model->no_ktp = $request->get('no_ktp');
+        $model->alamat = $request->get('alamat');
+        $model->created_by = 1;
+        $model->updated_by = 1;
+        $model->save();
+        
+        return redirect('penerbangan');
     }
 
     /**

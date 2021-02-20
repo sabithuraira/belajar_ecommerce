@@ -30,6 +30,8 @@ Route::get('/home/halo', [HomeController::class, 'halo']);
 Route::resource('barang', BarangController::class);
 Route::resource('bandara', BandaraController::class);
 Route::resource('penerbangan', PenerbanganController::class);
+Route::get('/penerbangan/{id}/tambah_penumpang', [PenerbanganController::class, 'tambah_penumpang']);
+Route::post('/penerbangan/{id}/store_penumpang', [PenerbanganController::class, 'store_penumpang']);
 Route::resource('invoice', InvoiceController::class);
 Route::resource('keranjang', KeranjangController::class);
 Route::resource('kategori', KategoriController::class);

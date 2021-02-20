@@ -18,7 +18,7 @@ Daftar Penerbangan
                 <th>Asal- Tujuan</th>
                 <th>{{ $model->attributes()['waktu_penerbangan'] }}</th>
                 <th>{{ $model->attributes()['status_penerbangan'] }}</th>
-                <th class="text-center" colspan="2">Aksi</th>
+                <th class="text-center" colspan="3">Aksi</th>
             </tr>
             @foreach($datas as $key=>$value)
                 <tr>
@@ -31,6 +31,7 @@ Daftar Penerbangan
                     </td>
                     <td>{{ date('d M Y G:i', strtotime($value->waktu_penerbangan)) }}</td>
                     <td>{{ $value->listStatus[$value->status_penerbangan] }}</td>
+                    <td class="text-center"><a class="btn btn-primary" href="{{ url('penerbangan/'.$value->id.'/tambah_penumpang/') }}">Tambah Penumpang</a></td>
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('penerbangan/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">
                         <form action="{{ url('penerbangan/'.$value['id']) }}" method="post">
