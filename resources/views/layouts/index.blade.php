@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ asset('theme/adminlte') }}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('theme/adminlte') }}/dist/css/adminlte.min.css">
+  @yield('css')
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -277,5 +278,6 @@
 <script src="{{ asset('theme/adminlte') }}/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('theme/adminlte') }}/dist/js/demo.js"></script>
+@yield('script')
 </body>
 </html>
