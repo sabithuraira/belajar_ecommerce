@@ -17,7 +17,9 @@ Daftar Message
                 <th>{{ $model->attributes()['id_customer'] }}</th>
                 <th>{{ $model->attributes()['isi_pesan'] }}</th>
                 <th>{{ $model->attributes()['tanggal_waktu'] }}</th>
-                <th>{{ $model->attributes()['chat_status'] }}</th>
+                @hasanyrole('superadmin')
+                    <th>{{ $model->attributes()['chat_status'] }}</th>
+                @endhasanyrole
                 <th class="text-center" colspan="2">Aksi</th>
             </tr>
             @foreach($datas as $key=>$value)
@@ -31,7 +33,9 @@ Daftar Message
                         = fungsi getListChatStatusAtrribute
                         = dan yang ditampilkan sesuai dg variabel dari 'chat_status'
                     -->
-                    <td>{{ $value->listChatStatus[$value->chat_status] }}</td>
+                    @hasanyrole('superadmin')
+                        <td>{{ $value->listChatStatus[$value->chat_status] }}</td>
+                    @endhasanyrole
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('message/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">
                         <form action="{{ url('message/'.$value['id']) }}" method="post">

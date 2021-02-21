@@ -9,6 +9,9 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserRoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +53,17 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //hanya bisa diakses oleh pengguna yang telah melakukan autentikasi
 Route::group(['middleware' => 'auth'], function(){
     Route::resource('barang', BarangController::class);
-    Route::resource('kategori', KategoriController::class);
     Route::resource('message', MessageController::class);
+
+    // ROUTE untuk pengaturan ROLE, PERMISSION dan USER ROLE
+    Route::resource('permission',PermissionController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
+    Route::resource('role',RoleController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
+    Route::resource('user_role',UserRoleController::class)->except(['show', 'create', 'store', 'destroy']);
+});
+
+//yang bisa mengakses routes di bawah hanya user yang telah login dan memiliki tipe superadmin
+Route::group(['middleware' => ['role:superadmin']], function () {    
+    Route::resource('kategori', KategoriController::class);
 });
 
 // Route::middleware(['auth'])->group(function () {

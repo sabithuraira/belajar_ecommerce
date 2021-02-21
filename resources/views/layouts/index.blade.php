@@ -206,12 +206,14 @@
             </a>
           </li>
           
-          <li class="nav-item">
-            <a href="{{ url('kategori') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Kategori</p>
-            </a>
-          </li>
+          @hasanyrole('superadmin')
+            <li class="nav-item">
+              <a href="{{ url('kategori') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Kategori</p>
+              </a>
+            </li>
+          @endhasanyrole
           
           <li class="nav-item">
             <a href="{{ url('message') }}" class="nav-link">
@@ -234,9 +236,6 @@
             </a>
           </li>
 
-
-
-
           @if(auth()->check())
             <li class="nav-item">
               <form action="{{ url('logout') }}" method="post">
@@ -245,8 +244,6 @@
                     <i class="nav-icon fas fa-th"></i><p>Logout</p>
                   </button>
               </form>
-
-
             </li>
           @else
             <li class="nav-item">

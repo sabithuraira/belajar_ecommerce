@@ -48,7 +48,14 @@ class MessageController extends Controller
         $model->isi_pesan = $request->get('isi_pesan');
         $model->tanggal_waktu = date('Y-m-d G:i:s');
         $model->id_chat_previous = $request->get('id_chat_previous');
-        $model->chat_status = $request->get('chat_status');
+        
+        if(auth()->user()->hasRole('superadmin')){
+            $model->chat_status = 3;
+        }
+        else{
+            $model->chat_status = $request->get('chat_status');
+        }
+
         $model->created_by = 1;
         $model->updated_by = 1;
         
