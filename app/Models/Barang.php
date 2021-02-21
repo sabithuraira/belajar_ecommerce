@@ -18,8 +18,14 @@ class Barang extends Model
             'harga' => 'Harga',
             'deskripsi' => 'Deskripsi',
             'jumlah' => 'Jumlah',
-            'created_at' => 'Dibuat oleh',
-            'updated_at' => 'Diperbaharui oleh',
+            'created_by' => 'Dibuat oleh',
+            'updated_by' => 'Diperbaharui oleh',
         ];
+    }
+
+    //relasi yang menghubungkan dengan user yang melakukan input
+    public function createdBy()
+    {
+        return $this->hasOne(User::class, 'id', 'created_by');
     }
 }

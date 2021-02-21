@@ -27,6 +27,7 @@ Daftar Barang
                 <th>{{ $model->attributes()['nama'] }}</th>
                 <th>{{ $model->attributes()['harga'] }}</th>
                 <th>{{ $model->attributes()['jumlah'] }}</th>
+                <th>{{ $model->attributes()['created_by'] }}</th>
                 <th class="text-center" colspan="2">Aksi</th>
             </tr>
             @foreach($datas as $key=>$value)
@@ -36,6 +37,7 @@ Daftar Barang
                     <td>{{ $value->nama }}</td>
                     <td>{{ $value->harga }}</td>
                     <td>{{ $value->jumlah }}</td>
+                    <td>{{ $value->createdBy->name }}</td>
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('barang/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">
                         <form action="{{ url('barang/'.$value['id']) }}" method="post">

@@ -150,7 +150,15 @@
       <img src="{{ asset('theme/adminlte') }}/dist/img/AdminLTELogo.png"
            class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <!--
+        Cara mengetahui apakah pengguna sudah login atau belum
+        Jika true, artinya dia telah login
+      -->
+      @if(auth()->check())
+        <span class="brand-text font-weight-light">Hi, {{ auth()->user()->name }}</span>
+      @else
+        <span class="brand-text font-weight-light">Belum Login</span>
+      @endif
     </a>
 
     <!-- Sidebar -->
@@ -225,6 +233,30 @@
               <p>Penerbangan</p>
             </a>
           </li>
+
+
+
+
+          @if(auth()->check())
+            <li class="nav-item">
+              <form action="{{ url('logout') }}" method="post">
+                  @csrf
+                  <button type="submit" class='nav-link'>
+                    <i class="nav-icon fas fa-th"></i><p>Logout</p>
+                  </button>
+              </form>
+
+
+            </li>
+          @else
+            <li class="nav-item">
+              <a href="{{ url('login') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Login</p>
+              </a>
+            </li>
+          @endif
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

@@ -36,19 +36,22 @@ Route::get('/penerbangan/create_many', [PenerbanganController::class, 'create_ma
 Route::post('/penerbangan/store_many', [PenerbanganController::class, 'store_many']);
 Route::resource('invoice', InvoiceController::class);
 Route::resource('keranjang', KeranjangController::class);
-Route::resource('kategori', KategoriController::class);
-Route::resource('message', MessageController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+//ini dapat diakses oleh siapa saja, tanpa login
 // Route::resource('barang', BarangController::class);
+//ini hanya bisa diakses oleh user yang telah melakukan autentikasi
 // Route::resource('barang', BarangController::class)->middleware('auth');
 
-
+//sekumpulan grup routes di dalam kode
+//hanya bisa diakses oleh pengguna yang telah melakukan autentikasi
 Route::group(['middleware' => 'auth'], function(){
     Route::resource('barang', BarangController::class);
+    Route::resource('kategori', KategoriController::class);
+    Route::resource('message', MessageController::class);
 });
 
 // Route::middleware(['auth'])->group(function () {
