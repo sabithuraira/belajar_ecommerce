@@ -59,6 +59,7 @@ Route::group(['middleware' => 'auth'], function(){
     
     Route::get('/barang/{id}/add_review', [BarangController::class, 'add_review']);
     Route::post('/barang/{id}/store_review', [BarangController::class, 'store_review']);
+    Route::post('/barang/store_keranjang', [BarangController::class, 'store_keranjang']);
 });
 
 //controller atau fungsi di bawah group ini

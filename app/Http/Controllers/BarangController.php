@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Review;
+use App\Models\Keranjang;
 use App\Http\Requests\BarangRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -146,6 +147,27 @@ class BarangController extends Controller
         $model->updated_by   = Auth::id();
         $model->save();  
         
+        return redirect('barang');
+    }
+
+    public function store_keranjang(Request $request){
+        $model = new Keranjang;
+        $model->id_barang = $request->get('id_barang');
+        $model->jumlah_pesanan = $request->get('jumlah_pesanan');
+
+        //kita akan memanggil data pada tabel barang
+        //sesuai dengan 'id_barang' yang dipilih pada form
+        $barang = Barang::find($model->id_barang);
+        //kemudian membuat sebuah variabel 'total_harga' yang 
+        //otomatis diambil dari harga barang dan jumlah pesanan
+        $total_harga = $barang->harga * $model->jumlah_pesanan;
+        //selanjutnya isian jumlah_harga dibuat otomatis dari total_harga
+        $model->jumlah_harga = $total_harga;
+        $model->id_customer = Auth::id();
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
+        
+        $model->save();
         return redirect('barang');
     }
 

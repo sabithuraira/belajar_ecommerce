@@ -21,6 +21,12 @@ class Keranjang extends Model
         //dan field 'id_barang' dari tabel ini (Keranjang)
         return $this->hasOne(Barang::class, 'id', 'id_barang');
     }
+
+    //relasi untuk ke tabel User melalui field id_customer
+    public function customer()
+    {
+        return $this->hasOne(User::class, 'id', 'id_customer');
+    }
     
     //Merinci atribute suatu tabel
     //digunakan agar selanjutnya, programmer tidak repot ketika ada 

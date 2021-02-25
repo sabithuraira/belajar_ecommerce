@@ -35,7 +35,7 @@ Daftar Keranjang
                     <td>{{ $value->barang->kode_barang }} - {{ $value->barang->nama }}</td>
                     <td>{{ $value->jumlah_pesanan }}</td>
                     <td>{{ $value->jumlah_harga }}</td>
-                    <td>{{ $value->id_customer }}</td>
+                    <td>{{ $value->customer->name }}</td>
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('keranjang/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">
                         <form action="{{ url('keranjang/'.$value['id']) }}" method="post">
