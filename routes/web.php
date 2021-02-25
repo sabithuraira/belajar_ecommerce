@@ -43,13 +43,10 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //hanya bisa diakses oleh pengguna yang telah melakukan autentikasi
 Route::group(['middleware' => 'auth'], function(){
     Route::resource('barang', BarangController::class);
-    Route::resource('message', MessageController::class);
 
-    // ROUTE untuk pengaturan ROLE, PERMISSION dan USER ROLE
-    Route::resource('permission',PermissionController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
-    Route::resource('role',RoleController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
-    Route::resource('user_role',UserRoleController::class)->except(['show', 'create', 'store', 'destroy']);
-
+    //pada kode ini fungsi destroy di "except" karena selanjutnya
+    //message/destroy hanya bisa diakses oleh pengguna dengan role 'superadmin'
+    Route::resource('message', MessageController::class)->except('destroy');
     
     // Route::post('/home/store', [HomeController::class, 'halo']);
     Route::resource('bandara', BandaraController::class);
@@ -66,6 +63,14 @@ Route::group(['middleware' => 'auth'], function(){
 //yang bisa mengakses routes di bawah hanya user yang telah login dan memiliki tipe superadmin
 Route::group(['middleware' => ['role:superadmin']], function () {    
     Route::resource('kategori', KategoriController::class);
+    
+    //ini adalah function menghapus message, yang hanya bisa diakses oleh 'superadmin'
+    Route::delete('/message/{id}', [MessageController::class, 'destroy']);
+
+    // ROUTE untuk pengaturan ROLE, PERMISSION dan USER ROLE
+    Route::resource('permission',PermissionController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
+    Route::resource('role',RoleController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
+    Route::resource('user_role',UserRoleController::class)->except(['show', 'create', 'store', 'destroy']);
 });
 
 // Route::middleware(['auth'])->group(function () {
