@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Barang;
+use App\Models\Review;
 use App\Http\Requests\BarangRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -122,6 +123,30 @@ class BarangController extends Controller
         //VALUES ($request->get(kode_barang), ....)
         
         return redirect('barang')->with('success', 'Data berhasil ditambahkan');
+    }
+
+    //fungsi untuk menampilkan form review
+    public function add_review($id){
+        $model = Barang::find($id); 
+        $list_review = Review::where('id_barang', '=', $id)->get();
+
+        return view('barang.add_review', compact(
+            'model', 'list_review'
+        ));
+    }
+
+    //fungsi untuk menyimpan hasil review dari pengguna
+    public function store_review(Request $request, $id){
+        $model = new Review;
+        $model->ulasan  = $request->get('ulasan');
+        $model->id_barang  = $id;
+        $model->id_customer  = Auth::id();
+        $model->rating  = $request->get('rating');
+        $model->created_by   = Auth::id();
+        $model->updated_by   = Auth::id();
+        $model->save();  
+        
+        return redirect('barang');
     }
 
     /**

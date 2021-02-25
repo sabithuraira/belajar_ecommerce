@@ -56,6 +56,9 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/penerbangan/store_many', [PenerbanganController::class, 'store_many']);
     Route::resource('invoice', InvoiceController::class);
     Route::resource('keranjang', KeranjangController::class);
+    
+    Route::get('/barang/{id}/add_review', [BarangController::class, 'add_review']);
+    Route::post('/barang/{id}/store_review', [BarangController::class, 'store_review']);
 });
 
 //controller atau fungsi di bawah group ini
