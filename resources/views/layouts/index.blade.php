@@ -238,6 +238,40 @@
                 <p>Penerbangan</p>
               </a>
             </li>
+
+
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon"></i>
+                <p>
+                  Roles & Permission
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ url('roles') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Roles</p>
+                  </a>
+                </li>
+
+                
+                <li class="nav-item">
+                  <a href="{{ url('permissions') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Permission</p>
+                  </a>
+                </li>
+                
+                <li class="nav-item">
+                  <a href="{{ url('user_role') }}" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>User Role</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
           @endif
 
           @if(auth()->check())
