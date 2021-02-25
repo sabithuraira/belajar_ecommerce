@@ -42,8 +42,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //sekumpulan grup routes di dalam kode
 //hanya bisa diakses oleh pengguna yang telah melakukan autentikasi
 Route::group(['middleware' => 'auth'], function(){
-    Route::resource('barang', BarangController::class);
-
     //pada kode ini fungsi destroy di "except" karena selanjutnya
     //message/destroy hanya bisa diakses oleh pengguna dengan role 'superadmin'
     Route::resource('message', MessageController::class)->except('destroy');
@@ -59,6 +57,12 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('invoice', InvoiceController::class);
     Route::resource('keranjang', KeranjangController::class);
 });
+
+//controller atau fungsi di bawah group ini
+//hanya bisa diakses oleh user dengan level superadmin atau pedagang
+Route::group(['middleware' => ['role:superadmin|pedagang']], function () {   
+    Route::resource('barang', BarangController::class);
+}); 
 
 //yang bisa mengakses routes di bawah hanya user yang telah login dan memiliki tipe superadmin
 Route::group(['middleware' => ['role:superadmin']], function () {    
