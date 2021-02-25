@@ -116,7 +116,7 @@ class BarangController extends Controller
         $model->harga =$request->get('harga');
         $model->deskripsi =$request->get('deskripsi');
         $model->jumlah =$request->get('jumlah');
-        $model->updated_by = 1;
+        $model->updated_by = Auth::id();
         $model->save();
         //INSERT INTO barang (kode_barang, nama, ....)
         //VALUES ($request->get(kode_barang), ....)

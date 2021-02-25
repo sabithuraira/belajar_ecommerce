@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Http\Requests\InvoiceRequest;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -54,8 +55,8 @@ class InvoiceController extends Controller
         $model->id_keranjang = $request->get('id_keranjang');
         $model->waktu_sampai = $request->get('tanggal_sampai').' '.$request->get('jam_sampai');
         $model->customer_id = $request->get('customer_id');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         
         $model->save();
 
@@ -106,7 +107,7 @@ class InvoiceController extends Controller
         $model->id_keranjang = $request->get('id_keranjang');
         $model->waktu_sampai = $request->get('tanggal_sampai').' '.$request->get('jam_sampai');
         $model->customer_id = $request->get('customer_id');
-        $model->updated_by = 1;
+        $model->updated_by =  Auth::id();
         $model->save();
 
         return redirect('invoice');

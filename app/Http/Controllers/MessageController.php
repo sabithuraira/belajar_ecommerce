@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Http\Requests\MessageRequest;
+use Illuminate\Support\Facades\Auth;
 
 class MessageController extends Controller
 {
@@ -56,8 +57,8 @@ class MessageController extends Controller
             $model->chat_status = $request->get('chat_status');
         }
 
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         
         $model->save();
 
@@ -103,7 +104,7 @@ class MessageController extends Controller
         $model->isi_pesan = $request->get('isi_pesan');
         $model->id_chat_previous = $request->get('id_chat_previous');
         $model->chat_status = $request->get('chat_status');
-        $model->updated_by = 1;
+        $model->updated_by =  Auth::id();
         
         $model->save();
 

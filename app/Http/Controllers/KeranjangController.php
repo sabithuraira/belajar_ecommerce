@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Barang;
 use App\Http\Requests\KeranjangRequest;
+use Illuminate\Support\Facades\Auth;
 
 class KeranjangController extends Controller
 {
@@ -61,8 +62,8 @@ class KeranjangController extends Controller
         $model->jumlah_harga = $total_harga;
 
         $model->id_customer = $request->get('id_customer');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         
         $model->save();
 
@@ -113,7 +114,7 @@ class KeranjangController extends Controller
         $model->jumlah_harga = $total_harga;
 
         $model->id_customer = $request->get('id_customer');
-        $model->updated_by = 1;
+        $model->updated_by =  Auth::id();
         
         $model->save();
 

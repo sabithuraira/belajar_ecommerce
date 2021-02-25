@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Penerbangan;
 use App\Models\Bandara;
 use App\Models\Penumpang;
+use Illuminate\Support\Facades\Auth;
 
 class PenerbanganController extends Controller
 {
@@ -38,8 +39,8 @@ class PenerbanganController extends Controller
         $model->nama = $request->get('nama');
         $model->no_ktp = $request->get('no_ktp');
         $model->alamat = $request->get('alamat');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         $model->save();
         
         return redirect('penerbangan');
@@ -73,8 +74,8 @@ class PenerbanganController extends Controller
         $model->bandara_tujuan = $request->get('bandara_tujuan');
         $model->status_penerbangan = $request->get('status_penerbangan');
         $model->waktu_penerbangan = $request->get('tanggal_penerbangan').' '.$request->get('jam_penerbangan');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         $model->save();
 
         return redirect('penerbangan');
@@ -103,8 +104,8 @@ class PenerbanganController extends Controller
         $model->bandara_tujuan = $request->get('bandara_tujuan');
         $model->status_penerbangan = $request->get('status_penerbangan');
         $model->waktu_penerbangan = $request->get('tanggal_penerbangan').' '.$request->get('jam_penerbangan');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
 
         //jika ingin mengecek nilai yang dihasilkan dari POST atau GET, gunakan code berikut
         // print_r($request->all());die();
@@ -120,8 +121,8 @@ class PenerbanganController extends Controller
                 $model_penumpang->alamat = $request->get('alamatau'.$i);
                 $model_penumpang->no_ktp = $request->get('no_ktpau'.$i);
                 $model_penumpang->penerbangan_id = $model->id; //diambil dari id model penerbangan yang disimpan sebelumnya
-                $model_penumpang->created_by = 1;
-                $model_penumpang->updated_by = 1;
+                $model_penumpang->created_by =  Auth::id();
+                $model_penumpang->updated_by =  Auth::id();
                 $model_penumpang->save();
             }
         }
@@ -177,7 +178,7 @@ class PenerbanganController extends Controller
         $model->bandara_tujuan = $request->get('bandara_tujuan');
         $model->status_penerbangan = $request->get('status_penerbangan');
         $model->waktu_penerbangan = $request->get('tanggal_penerbangan').' '.$request->get('jam_penerbangan');
-        $model->updated_by = 1;
+        $model->updated_by =  Auth::id();
         $model->save();
 
         return redirect('penerbangan');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
 use App\Http\Requests\KategoriRequest;
+use Illuminate\Support\Facades\Auth;
 
 class KategoriController extends Controller
 {
@@ -50,8 +51,8 @@ class KategoriController extends Controller
         $model->nama = $request->get('nama');
         $model->deskripsi = $request->get('deskripsi');
         $model->induk_kategori = $request->get('induk_kategori');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         
         $model->save();
 
@@ -97,7 +98,7 @@ class KategoriController extends Controller
         $model->nama = $request->get('nama');
         $model->deskripsi = $request->get('deskripsi');
         $model->induk_kategori = $request->get('induk_kategori');
-        $model->updated_by = 1;
+        $model->updated_by =  Auth::id();
         $model->save();
         return redirect('kategori');
     }

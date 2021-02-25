@@ -29,16 +29,6 @@ Route::get('/', function () {
 });
 
 Route::get('/home/halo', [HomeController::class, 'halo']);
-// Route::post('/home/store', [HomeController::class, 'halo']);
-Route::resource('bandara', BandaraController::class);
-Route::resource('penerbangan', PenerbanganController::class)->except('show');
-Route::get('/penerbangan/{id}/show', [PenerbanganController::class, 'show']);
-Route::get('/penerbangan/{id}/tambah_penumpang', [PenerbanganController::class, 'tambah_penumpang']);
-Route::post('/penerbangan/{id}/store_penumpang', [PenerbanganController::class, 'store_penumpang']);
-Route::get('/penerbangan/create_many', [PenerbanganController::class, 'create_many']);
-Route::post('/penerbangan/store_many', [PenerbanganController::class, 'store_many']);
-Route::resource('invoice', InvoiceController::class);
-Route::resource('keranjang', KeranjangController::class);
 // Route::get('/barang/edit_dong', [BarangController::class, 'edit_dong']);
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');
@@ -59,6 +49,18 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('permission',PermissionController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
     Route::resource('role',RoleController::class)->except(['show', 'edit', 'update', 'create', 'destroy']);
     Route::resource('user_role',UserRoleController::class)->except(['show', 'create', 'store', 'destroy']);
+
+    
+    // Route::post('/home/store', [HomeController::class, 'halo']);
+    Route::resource('bandara', BandaraController::class);
+    Route::resource('penerbangan', PenerbanganController::class)->except('show');
+    Route::get('/penerbangan/{id}/show', [PenerbanganController::class, 'show']);
+    Route::get('/penerbangan/{id}/tambah_penumpang', [PenerbanganController::class, 'tambah_penumpang']);
+    Route::post('/penerbangan/{id}/store_penumpang', [PenerbanganController::class, 'store_penumpang']);
+    Route::get('/penerbangan/create_many', [PenerbanganController::class, 'create_many']);
+    Route::post('/penerbangan/store_many', [PenerbanganController::class, 'store_many']);
+    Route::resource('invoice', InvoiceController::class);
+    Route::resource('keranjang', KeranjangController::class);
 });
 
 //yang bisa mengakses routes di bawah hanya user yang telah login dan memiliki tipe superadmin

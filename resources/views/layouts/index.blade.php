@@ -169,73 +169,76 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="../../index.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="{{ url('barang') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Barang</p>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="{{ url('keranjang') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Keranjang</p>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="{{ url('invoice') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Invoice</p>
-            </a>
-          </li>
-          
-          @hasanyrole('superadmin')
+          <!-- menu ini hanya akan muncul ketika pengguna sudah melakukan login -->
+          @if(auth()->check())
+            <li class="nav-item has-treeview">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                <p>
+                  Dashboard
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="../../index.html" class="nav-link">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Dashboard v1</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
             <li class="nav-item">
-              <a href="{{ url('kategori') }}" class="nav-link">
+              <a href="{{ url('barang') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
-                <p>Kategori</p>
+                <p>Barang</p>
               </a>
             </li>
-          @endhasanyrole
-          
-          <li class="nav-item">
-            <a href="{{ url('message') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Message</p>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="{{ url('bandara') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Bandara</p>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a href="{{ url('penerbangan') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>Penerbangan</p>
-            </a>
-          </li>
+            
+            <li class="nav-item">
+              <a href="{{ url('keranjang') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Keranjang</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="{{ url('invoice') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Invoice</p>
+              </a>
+            </li>
+            
+            @hasanyrole('superadmin')
+              <li class="nav-item">
+                <a href="{{ url('kategori') }}" class="nav-link">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>Kategori</p>
+                </a>
+              </li>
+            @endhasanyrole
+            
+            <li class="nav-item">
+              <a href="{{ url('message') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Message</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="{{ url('bandara') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Bandara</p>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+              <a href="{{ url('penerbangan') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>Penerbangan</p>
+              </a>
+            </li>
+          @endif
 
           @if(auth()->check())
             <li class="nav-item">

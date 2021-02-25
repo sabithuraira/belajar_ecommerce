@@ -6,6 +6,7 @@ use App\Models\Bandara;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\BandaraRequest;
+use Illuminate\Support\Facades\Auth;
 
 class BandaraController extends Controller
 {
@@ -46,8 +47,8 @@ class BandaraController extends Controller
         $model->kode_bandara = $request->get('kode_bandara');
         $model->nama_bandara = $request->get('nama_bandara');
         $model->alamat_bandara = $request->get('alamat_bandara');
-        $model->created_by = 1;
-        $model->updated_by = 1;
+        $model->created_by =  Auth::id();
+        $model->updated_by =  Auth::id();
         $model->save();
 
         return redirect('bandara');
@@ -89,7 +90,7 @@ class BandaraController extends Controller
         $model->kode_bandara = $request->get('kode_bandara');
         $model->nama_bandara = $request->get('nama_bandara');
         $model->alamat_bandara = $request->get('alamat_bandara');
-        $model->updated_by = 1;
+        $model->updated_by =  Auth::id();
         $model->save();
 
         return redirect('bandara');
