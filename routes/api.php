@@ -19,5 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//semua url pada file ini diakses pada "localhost/nama_project/public/api"
 
+//untuk index url = localhost/nama_project/public/api/barang (GET)
+//untuk store url = localhost/nama_project/public/api/barang (POST)
+//untuk update url = localhost/nama_project/public/api/barang/{id} (PUT)
+//untuk destroy url = localhost/nama_project/public/api/barang/{id} (DELETE)
 Route::resource('barang', ApiBarangController::class);
