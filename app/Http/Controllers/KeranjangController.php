@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Barang;
+use App\Models\InvoiceBarang;
 use App\Http\Requests\KeranjangRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,6 +68,25 @@ class KeranjangController extends Controller
         
         $model->save();
 
+        return redirect('keranjang');
+    }
+
+    public function pindahKeInvoice($id){
+        $model = Keranjang::find($id);
+
+        $model_invoice = new InvoiceBarang;
+        $model_invoice->id_invoice = 
+        $model_invoice->id_barang = $model->id_barang; 
+        $model_invoice->id_customer =  $model->id_customer;
+        $model_invoice->jumlah_barang =  $model->jumlah_pesanan;
+        $model_invoice->jumlah_harga =  $model->jumlah_harga;
+        $model_invoice->created_by = Auth::id();
+        $model_invoice->updated_by = Auth::id();
+        $model_invoice->id_keranjang = $model->id;
+        $model_invoice->save();
+
+        // $model->delete();
+        
         return redirect('keranjang');
     }
 

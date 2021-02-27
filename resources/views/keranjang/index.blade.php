@@ -18,7 +18,7 @@ Daftar Keranjang
                 <th>{{ $model->attributes()['jumlah_pesanan'] }}</th>
                 <th>{{ $model->attributes()['jumlah_harga'] }}</th>
                 <th>{{ $model->attributes()['id_customer'] }}</th>
-                <th class="text-center" colspan="2">Aksi</th>
+                <th class="text-center" colspan="3">Aksi</th>
             </tr>
             @foreach($datas as $key=>$value)
                 <tr>
@@ -36,6 +36,13 @@ Daftar Keranjang
                     <td>{{ $value->jumlah_pesanan }}</td>
                     <td>{{ $value->jumlah_harga }}</td>
                     <td>{{ $value->customer->name }}</td>
+                    <td class="text-center">
+                        <form action="{{ url('keranjang/'.$value['id'].'/pindah_ke_invoice') }}" method="post">
+                            @csrf
+                            <button type="submit" class='btn btn-success'>Jadikan Pembelian</button>
+                        </form>
+                    </td>
+                    
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('keranjang/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">
                         <form action="{{ url('keranjang/'.$value['id']) }}" method="post">
