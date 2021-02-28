@@ -1,6 +1,5 @@
 @extends('layouts.index')
 
-
 @section('title')
 Tambah Barang
 @endsection

@@ -77,25 +77,53 @@ class BarangController extends Controller
         $model->updated_by = Auth::id();
         //INSERT INTO barang (kode_barang, nama, ....)
         //VALUES ($request->get(kode_barang), ....)
+
+        //BERLAKU HANYA UNTUK MULTIPLE FILE
+        $total_foto = $request->get('total_foto'); //mengambil jumlah total foto yang di upload
         if($model->save()){
+            ////TUTORIAL MENYIMPAN SINGLE FILE////
+            /////////////////////////////////////////////
             //jika tabel barang berhasil disimpan, maka baru simpan foto
-            if($request->file('foto')){
-                $file = $request->file('foto');
-                //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
-                //time ditambahkan dg nama asli file, namun dihilangkan spasi
-                $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
-                //file yang diupload, di upload ke folder "public/foto"
-                $file->move("foto", $nama_file);
+            // if($request->file('foto')){
+            //     $file = $request->file('foto');
+            //     //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+            //     //time ditambahkan dg nama asli file, namun dihilangkan spasi
+            //     $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+            //     //file yang diupload, di upload ke folder "public/foto"
+            //     $file->move("foto", $nama_file);
                 
-                //menyimpan informasi foto di database
-                $model_foto = new FotoBarang;
-                $model_foto->nama_foto = "";
-                $model_foto->url = $nama_file;
-                $model_foto->id_barang = $model->id;
-                $model_foto->created_by   = Auth::id();
-                $model_foto->updated_by  = Auth::id();
-                $model_foto->save();
+            //     //menyimpan informasi foto di database
+            //     $model_foto = new FotoBarang;
+            //     $model_foto->nama_foto = "";
+            //     $model_foto->url = $nama_file;
+            //     $model_foto->id_barang = $model->id;
+            //     $model_foto->created_by   = Auth::id();
+            //     $model_foto->updated_by  = Auth::id();
+            //     $model_foto->save();
                 
+            // }
+
+            ////TUTORIAL MENYIMPAN SINGLE FILE////
+            /////////////////////////////////////////////
+            for($i=0;$i<3;$i++){
+                if($request->file('urlau'.$i)){
+                    $file = $request->file('urlau'.$i);
+                    //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+                    //time ditambahkan dg nama asli file, namun dihilangkan spasi
+                    $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+                    //file yang diupload, di upload ke folder "public/foto"
+                    $file->move("foto", $nama_file);
+                    
+                    //menyimpan informasi foto di database
+                    $model_foto = new FotoBarang;
+                    $model_foto->nama_foto = $request->get("nama_fotoau".$i);
+                    $model_foto->url = $nama_file;
+                    $model_foto->id_barang = $model->id;
+                    $model_foto->created_by   = Auth::id();
+                    $model_foto->updated_by  = Auth::id();
+                    $model_foto->save();
+                    
+                }
             }
         }
         
