@@ -2,7 +2,8 @@
 
 
 @section('title')
-Update Barang
+Detail Barang
+<a class="float-right" href="{{ url('barang/'.$model->id.'/print_pdf') }}">Unduh PDF</a>
 @endsection
 
 @section('content')

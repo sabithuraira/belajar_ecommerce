@@ -10,6 +10,7 @@ use App\Models\FotoBarang;
 use App\Http\Requests\BarangRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File; 
+use PDF;
 
 class BarangController extends Controller
 {
@@ -270,5 +271,20 @@ class BarangController extends Controller
         $model = Barang::find($id);
         $model->delete();
         return redirect('barang');
+    }
+    
+    public function print_pdf($id){
+        $model = Barang::find($id);
+        //barang.print_pdf adalah view yang ditampilkan
+    	$pdf = PDF::loadview('barang.print_pdf', compact(
+            'model'
+        ));
+
+        //ini contoh untuk melakukan pengaturan jenis kertas dan orientasi tampilan
+        //$pdf = PDF::loadView('pdf1')->setPaper('a4', 'potrait');
+        
+        //mengunduh file PDF yang telah dibuat,
+        //dengan nama "nama_file.pdf"
+    	return $pdf->download('nama_file');
     }
 }
