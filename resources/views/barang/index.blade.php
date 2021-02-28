@@ -35,7 +35,9 @@ Daftar Barang
                     <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $value->kode_barang }}</td>
-                        <td>{{ $value->nama }}</td>
+                        <td>
+                            <a href="{{ url('barang/'.$value->id) }}">{{ $value->nama }}</a>
+                        </td>
                         <td>{{ $value->harga }}</td>
                         <td>{{ $value->jumlah }}</td>
                         <td>{{ $value->createdBy->name }}</td>

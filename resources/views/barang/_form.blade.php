@@ -39,6 +39,12 @@
                 <p class="text-danger">{{ $msg }}</p>
             @endforeach
         </div> 
+
+        
+        <div class="form-group">
+            <label>Foto:</label> 
+            <input type="file" class="form-control" name="foto">
+        </div> 
     </div>
 </div>
 

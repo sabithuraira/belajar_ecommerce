@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Review;
 use App\Models\Keranjang;
+use App\Models\FotoBarang;
 use App\Http\Requests\BarangRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,6 +34,7 @@ class BarangController extends Controller
         $datas = Barang::where('kode_barang', 'LIKE', '%' . $keyword . '%')
             ->orWhere('nama', 'LIKE', '%' . $keyword . '%')
             ->orWhere('deskripsi', 'LIKE', '%' . $keyword . '%')
+            ->orderBy('id', 'DESC')
             ->paginate();
 
         $datas->withPath('barang');
@@ -71,9 +73,29 @@ class BarangController extends Controller
         $model->jumlah =$request->get('jumlah');
         $model->created_by = Auth::id();
         $model->updated_by = Auth::id();
-        $model->save();
         //INSERT INTO barang (kode_barang, nama, ....)
         //VALUES ($request->get(kode_barang), ....)
+        if($model->save()){
+            //jika tabel barang berhasil disimpan, maka baru simpan foto
+            if($request->file('foto')){
+                $file = $request->file('foto');
+                //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+                //time ditambahkan dg nama asli file, namun dihilangkan spasi
+                $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+                //file yang diupload, di upload ke folder "public/foto"
+                $file->move("foto", $nama_file);
+                
+                //menyimpan informasi foto di database
+                $model_foto = new FotoBarang;
+                $model_foto->nama_foto = "";
+                $model_foto->url = $nama_file;
+                $model_foto->id_barang = $model->id;
+                $model_foto->created_by   = Auth::id();
+                $model_foto->updated_by  = Auth::id();
+                $model_foto->save();
+                
+            }
+        }
         
         return redirect('barang')->with('success', 'Data berhasil ditambahkan');
     }
@@ -86,7 +108,12 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = Barang::find($id);
+        //mengambil semua foto_barang sesuai id barang yang dipilih
+        $list_foto = FotoBarang::where("id_barang", "=", $id)->get();
+        return view('barang.show', compact(
+            'model', 'list_foto'
+        ));
     }
 
     /**
