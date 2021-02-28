@@ -44,6 +44,10 @@
         <div class="form-group">
             <label>Foto:</label> 
             <input type="file" class="form-control" name="foto">
+
+            @foreach($list_foto as $key=>$value)
+                <a href="{{ asset('foto/'.$value->url) }}">Unduh File</a>
+            @endforeach
         </div> 
     </div>
 </div>

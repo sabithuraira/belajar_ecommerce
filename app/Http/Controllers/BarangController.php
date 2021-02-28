@@ -9,6 +9,7 @@ use App\Models\Keranjang;
 use App\Models\FotoBarang;
 use App\Http\Requests\BarangRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File; 
 
 class BarangController extends Controller
 {
@@ -52,8 +53,9 @@ class BarangController extends Controller
     public function create()
     {
         $model = new Barang;
+        $list_foto = [];
         return view('barang.create', compact(
-            'model'
+            'model', 'list_foto'
         ));
     }
 
@@ -125,8 +127,9 @@ class BarangController extends Controller
     public function edit($id)
     {
         $model = Barang::find($id); //SELECT * FROM barang WHERE id=...
+        $list_foto = FotoBarang::where("id_barang", "=", $id)->get();
         return view('barang.edit', compact(
-            'model'
+            'model', 'list_foto'
         ));
     }
 
@@ -146,9 +149,39 @@ class BarangController extends Controller
         $model->deskripsi =$request->get('deskripsi');
         $model->jumlah =$request->get('jumlah');
         $model->updated_by = Auth::id();
-        $model->save();
         //INSERT INTO barang (kode_barang, nama, ....)
         //VALUES ($request->get(kode_barang), ....)
+        if($model->save()){
+            //jika tabel barang berhasil disimpan, maka baru simpan foto
+            if($request->file('foto')){
+                $file = $request->file('foto');
+                //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+                //time ditambahkan dg nama asli file, namun dihilangkan spasi
+                $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+                //file yang diupload, di upload ke folder "public/foto"
+                $file->move("foto", $nama_file);
+                
+                //mengambil foto barang pada inputan bertama, jika ada foto_barang nya
+                $model_foto = FotoBarang::where("id_barang", "=", $id)->first(); 
+
+                //ketika foto barang tidak ada pada data barang ini,
+                //maka kondisinya akan membuat data baru pada foto barang
+                if($model_foto==null){
+                    $model_foto = new FotoBarang;
+                }
+                else{ //dan jika sudah sebelumnya, hapus foto yang lama
+                    File::delete('foto/'.$model_foto->url);
+                }
+
+                $model_foto->nama_foto = "";
+                $model_foto->url = $nama_file;
+                $model_foto->id_barang = $model->id;
+                $model_foto->created_by   = Auth::id();
+                $model_foto->updated_by  = Auth::id();
+                $model_foto->save();
+                
+            }
+        }
         
         return redirect('barang')->with('success', 'Data berhasil ditambahkan');
     }
