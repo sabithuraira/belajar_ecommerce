@@ -64,7 +64,10 @@
                 </tr>
                 
                 <tr v-for="(data, index) in rincian_foto" :key="data.id">
-                    <td><input type="file" :name="'url'+data.id"></td>
+                    <td>
+                        <input type="file" :name="'url'+data.id">
+                        <a v-if="data.url.length>0" href="#">Unduh</a>
+                    </td>
                     <td><input type="text" :value="data.nama_foto" :name="'nama_foto'+data.id"></td>
                 </tr>
             </table>
@@ -82,16 +85,26 @@
        var vm = new Vue({  
            el: "#app_vue",
            data:{
-                rincian_foto: [],
-                total_foto: 0,
-            }, 
+                rincian_foto: {!! json_encode($list_foto) !!},
+            },
+            //ini sama seperti data biasa, tapi data di dalam computed itu 
+            //nilainya bergantung dari nilai, contoh, nilai total_foto
+            //bergantung dari jumlah yang ada pada rincian_foto 
+            computed: {
+                total_foto: function() {
+                    return this.rincian_foto.length;
+                }
+            },
             methods: {
                 addRincian: function(){
                     var self = this;
+                    
+                    self.total_foto = self.rincian_foto.length;
 
                     self.rincian_foto.push({
                         'id': 'au'+(self.total_foto),
-                        'nama_foto'   : ''
+                        'nama_foto'   : '',
+                        'url' : '',
                     });
                     self.total_foto++;
                 }

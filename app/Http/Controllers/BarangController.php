@@ -180,36 +180,93 @@ class BarangController extends Controller
         $model->updated_by = Auth::id();
         //INSERT INTO barang (kode_barang, nama, ....)
         //VALUES ($request->get(kode_barang), ....)
+        
+        $total_foto = $request->get('total_foto'); //mengambil jumlah total foto yang di upload
         if($model->save()){
             //jika tabel barang berhasil disimpan, maka baru simpan foto
-            if($request->file('foto')){
-                $file = $request->file('foto');
-                //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
-                //time ditambahkan dg nama asli file, namun dihilangkan spasi
-                $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
-                //file yang diupload, di upload ke folder "public/foto"
-                $file->move("foto", $nama_file);
+            // if($request->file('foto')){
+            //     $file = $request->file('foto');
+            //     //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+            //     //time ditambahkan dg nama asli file, namun dihilangkan spasi
+            //     $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+            //     //file yang diupload, di upload ke folder "public/foto"
+            //     $file->move("foto", $nama_file);
                 
-                //mengambil foto barang pada inputan bertama, jika ada foto_barang nya
-                $model_foto = FotoBarang::where("id_barang", "=", $id)->first(); 
+            //     //mengambil foto barang pada inputan bertama, jika ada foto_barang nya
+            //     $model_foto = FotoBarang::where("id_barang", "=", $id)->first(); 
 
-                //ketika foto barang tidak ada pada data barang ini,
-                //maka kondisinya akan membuat data baru pada foto barang
-                if($model_foto==null){
-                    $model_foto = new FotoBarang;
-                }
-                else{ //dan jika sudah sebelumnya, hapus foto yang lama
-                    File::delete('foto/'.$model_foto->url);
-                }
+            //     //ketika foto barang tidak ada pada data barang ini,
+            //     //maka kondisinya akan membuat data baru pada foto barang
+            //     if($model_foto==null){
+            //         $model_foto = new FotoBarang;
+            //     }
+            //     else{ //dan jika sudah sebelumnya, hapus foto yang lama
+            //         File::delete('foto/'.$model_foto->url);
+            //     }
 
-                $model_foto->nama_foto = "";
-                $model_foto->url = $nama_file;
-                $model_foto->id_barang = $model->id;
-                $model_foto->created_by   = Auth::id();
-                $model_foto->updated_by  = Auth::id();
-                $model_foto->save();
+            //     $model_foto->nama_foto = "";
+            //     $model_foto->url = $nama_file;
+            //     $model_foto->id_barang = $model->id;
+            //     $model_foto->created_by   = Auth::id();
+            //     $model_foto->updated_by  = Auth::id();
+            //     $model_foto->save();
                 
+            // }
+
+            //UPDATE BANYAK FILE
+            /////////////
+            ///ADA 2 KONDISI PADA SAAT PROSES UPDATE
+            //1. KITA HARUS MELAKUKAN PENGECEKAN APAKAH ADA FILE LAMA YANG DI UPDATE
+            //2. KITA HARUS MENAMBAHKAN JIKA ADA FILE BARU YANG DI UPLOAD
+            $list_foto = FotoBarang::where("id_barang", "=", $id)->get();
+            foreach($list_foto as $key=>$value){
+                if($request->file('url'.$value->id)){
+                    $file = $request->file('url'.$value->id);
+                    // //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+                    // //time ditambahkan dg nama asli file, namun dihilangkan spasi
+                    $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+                    // //file yang diupload, di upload ke folder "public/foto"
+                    $file->move("foto", $nama_file);
+                    
+                    File::delete('foto/'.$value->url);
+                    
+                    $value->nama_foto = $request->get("nama_foto".$value->id);
+                    $value->url = $nama_file;
+                    $value->created_by   = Auth::id();
+                    $value->updated_by  = Auth::id();
+                    $value->save();
+                    
+                }
             }
+
+            //MENGHITUNG SELISIH FOTO YANG DITAMBAHKAN
+            $sisa_foto = $total_foto - count($list_foto);
+            //MENGECEK APAKAH ADA FOTO YANG DITAMBAHKAN
+            if($sisa_foto>0){
+                for($i=count($list_foto);$i<$total_foto;$i++){
+                    if($request->file('urlau'.$i)){
+                        $file = $request->file('urlau'.$i);
+                        //penamaan file menggunakan time, untuk menghindari ada file dg nama yang sama
+                        //time ditambahkan dg nama asli file, namun dihilangkan spasi
+                        $nama_file = time().str_replace(" ","", $file->getClientOriginalName());
+                        //file yang diupload, di upload ke folder "public/foto"
+                        $file->move("foto", $nama_file);
+                        
+                        //menyimpan informasi foto di database
+                        $model_foto = new FotoBarang;
+                        $model_foto->nama_foto = $request->get("nama_fotoau".$i);
+                        $model_foto->url = $nama_file;
+                        $model_foto->id_barang = $model->id;
+                        $model_foto->created_by   = Auth::id();
+                        $model_foto->updated_by  = Auth::id();
+                        $model_foto->save();
+                        
+                    }
+                }
+            }
+
+            
+            ///////////
         }
         
         return redirect('barang')->with('success', 'Data berhasil ditambahkan');
