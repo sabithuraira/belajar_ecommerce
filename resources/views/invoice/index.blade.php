@@ -18,15 +18,16 @@ Daftar Invoice
                 <th>{{ $model->attributes()['kode_transaksi'] }}</th>
                 <th>{{ $model->attributes()['jumlah_transaksi'] }}</th>
                 <th>{{ $model->attributes()['metode_pembayaran'] }}</th>
-                <th class="text-center" colspan="2">Aksi</th>
+                <th class="text-center" colspan="3">Aksi</th>
             </tr>
             @foreach($datas as $key=>$value)
                 <tr>
                     <td>{{ $key+1 }}</td>
-                    <td>{{ $value->customer_id }}</td>
+                    <td>{{ $value->customer->name }}</td>
                     <td>{{ $value->kode_transaksi }}</td>
                     <td>{{ $value->jumlah_transaksi }}</td>
                     <td>{{ $value->listMetodePembayaran[$value->metode_pembayaran] }}</td>
+                    <td class="text-center"><a class="btn btn-primary" href="{{ url('invoice/'.$value->id) }}">Detail</a></td>
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('invoice/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">
                         <form action="{{ url('invoice/'.$value['id']) }}" method="post">

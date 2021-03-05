@@ -71,6 +71,10 @@ class KeranjangController extends Controller
                     //tidak lagi tampil pada KERANJANG
                     $value->status = 2;
                     $value->save();
+
+                    $barang = Barang::find($value->id_barang);
+                    $barang->jumlah = $barang->jumlah - $value->jumlah_pesanan;
+                    $barang->save();
                 }
             }
         }

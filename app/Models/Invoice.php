@@ -10,6 +10,13 @@ class Invoice extends Model
     use HasFactory;
     protected $table = "invoice";
 
+    
+    //relasi untuk ke tabel User melalui field id_customer
+    public function customer()
+    {
+        return $this->hasOne(User::class, 'id', 'customer_id');
+    }
+
     public function attributes()
     {
         return [
@@ -29,6 +36,7 @@ class Invoice extends Model
 
     public function getListMetodePembayaranAttribute(){
         return [
+            ''=> '', //karena metode pembayaran bisa kosong, maka isian ini akan mengakomodir tampilan jika isinya kosong.
             1 => 'COD',
             2 => 'Virtual Account',
             3 => 'Transfer Bank',
