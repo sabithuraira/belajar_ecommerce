@@ -18,7 +18,12 @@ class KeranjangController extends Controller
      */
     public function index()
     {
-        $datas = Keranjang::all();
+        //daftar keranjang yang ditampilkan adalah
+        //yang memiliki status = 1 (dia masih aktif, belum dipindahkan ke pembelian)
+        //dan yang memiliki id customer sesuai dengan pengguna yang sedang login
+        $datas = Keranjang::where('status', '=', 1)
+            ->where('id_customer', '=', Auth::id())
+            ->get();
         $model = new Keranjang;
         return view('keranjang.index', compact(
             'datas', 'model'
@@ -75,7 +80,6 @@ class KeranjangController extends Controller
         $model = Keranjang::find($id);
 
         $model_invoice = new InvoiceBarang;
-        $model_invoice->id_invoice = 
         $model_invoice->id_barang = $model->id_barang; 
         $model_invoice->id_customer =  $model->id_customer;
         $model_invoice->jumlah_barang =  $model->jumlah_pesanan;
@@ -83,9 +87,10 @@ class KeranjangController extends Controller
         $model_invoice->created_by = Auth::id();
         $model_invoice->updated_by = Auth::id();
         $model_invoice->id_keranjang = $model->id;
-        $model_invoice->save();
-
-        // $model->delete();
+        if($model_invoice->save()){
+            $model->status = 2;
+            $model->save();
+        }
         
         return redirect('keranjang');
     }

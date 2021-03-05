@@ -37,10 +37,7 @@ Daftar Keranjang
                     <td>{{ $value->jumlah_harga }}</td>
                     <td>{{ $value->customer->name }}</td>
                     <td class="text-center">
-                        <form action="{{ url('keranjang/'.$value['id'].'/pindah_ke_invoice') }}" method="post">
-                            @csrf
-                            <button type="submit" class='btn btn-success'>Jadikan Pembelian</button>
-                        </form>
+                        <a class="btn btn-success" href="{{ url('keranjang/'.$value->id.'/pindah_ke_invoice') }}">Jadikan Pembelian</a>
                     </td>
                     
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('keranjang/'.$value->id.'/edit/') }}">Update</a></td>

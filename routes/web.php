@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BandaraController;
 use App\Http\Controllers\PenerbanganController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\InvoiceBarangController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\MessageController;
@@ -56,11 +57,12 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('/penerbangan/store_many', [PenerbanganController::class, 'store_many']);
     Route::resource('invoice', InvoiceController::class);
     Route::resource('keranjang', KeranjangController::class);
+    Route::resource('invoice_barang', InvoiceBarangController::class);
     
     Route::get('/barang/{id}/add_review', [BarangController::class, 'add_review']);
     Route::post('/barang/{id}/store_review', [BarangController::class, 'store_review']);
     Route::post('/barang/store_keranjang', [BarangController::class, 'store_keranjang']);
-    Route::post('/keranjang/{id}/pindah_ke_invoice', [Controller::class, 'pindahKeInvoice']);
+    Route::get('/keranjang/{id}/pindah_ke_invoice', [KeranjangController::class, 'pindahKeInvoice']);
     
     Route::get('/barang/{id}/print_pdf', [BarangController::class, 'print_pdf']);
 });
