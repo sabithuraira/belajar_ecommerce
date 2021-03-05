@@ -201,32 +201,12 @@
                 <p>Keranjang</p>
               </a>
             </li>
-
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
+            
+            <li class="nav-item">
+              <a href="{{ url('invoice') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Belanja
-                  <i class="right fas fa-angle-left"></i>
-                </p>
+                <p>Belanja</p>
               </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('invoice') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Invoice</p>
-                  </a>
-                </li>
-              </ul>
-              
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ url('invoice_barang') }}" class="nav-link">
-                    <i class="far fa-circle nav-icon"></i>
-                    <p>Daftar Barang</p>
-                  </a>
-                </li>
-              </ul>
             </li>
             
             @hasanyrole('superadmin')

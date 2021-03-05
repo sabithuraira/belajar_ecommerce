@@ -6,7 +6,8 @@ Daftar Keranjang
 
 @section('content')
     <div class="col-sm-12">  
-        <a href="{{ url('keranjang/create') }}"><button class="btn btn-success">Tambah</button></a>
+        <!-- Ketika pengguna memilih tombol ini semua barang yang ada di keranjang, akan langsung masuk ke invoice -->
+        <a href="{{ url('keranjang/beli_semua') }}"><button class="btn btn-success">Beli Semua</button></a>
     </div>
     <br/>
     
@@ -18,7 +19,7 @@ Daftar Keranjang
                 <th>{{ $model->attributes()['jumlah_pesanan'] }}</th>
                 <th>{{ $model->attributes()['jumlah_harga'] }}</th>
                 <th>{{ $model->attributes()['id_customer'] }}</th>
-                <th class="text-center" colspan="3">Aksi</th>
+                <th class="text-center" colspan="2">Aksi</th>
             </tr>
             @foreach($datas as $key=>$value)
                 <tr>
@@ -36,9 +37,9 @@ Daftar Keranjang
                     <td>{{ $value->jumlah_pesanan }}</td>
                     <td>{{ $value->jumlah_harga }}</td>
                     <td>{{ $value->customer->name }}</td>
-                    <td class="text-center">
+                    <!-- <td class="text-center">
                         <a class="btn btn-success" href="{{ url('keranjang/'.$value->id.'/pindah_ke_invoice') }}">Jadikan Pembelian</a>
-                    </td>
+                    </td> -->
                     
                     <td class="text-center"><a class="btn btn-primary" href="{{ url('keranjang/'.$value->id.'/edit/') }}">Update</a></td>
                     <td class="text-center">

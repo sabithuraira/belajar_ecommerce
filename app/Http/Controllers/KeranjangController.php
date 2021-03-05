@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Keranjang;
 use App\Models\Barang;
+use App\Models\Invoice;
 use App\Models\InvoiceBarang;
 use App\Http\Requests\KeranjangRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class KeranjangController extends Controller
 {
@@ -28,6 +30,52 @@ class KeranjangController extends Controller
         return view('keranjang.index', compact(
             'datas', 'model'
         ));
+    }
+
+    //fungsi ini digunakan untuk memasukkan semua barang 
+    //pada keranjang ke invoice
+    public function beli_semua(){
+        //kita ambil terlebih semua keranjang yang dimiliki oleh user yang sedang login
+        //dan memiliki status = 1 yang artinya masih hanya dalam keranjang
+        $datas = Keranjang::where('status', '=', 1)
+            ->where('id_customer', '=', Auth::id())
+            ->get();
+
+        //mengambil jumlah harga dari semua barang yang ada pada keranajng
+        $total_harga = Keranjang::where('status', '=', 1)
+            ->where('id_customer', '=', Auth::id())
+            ->sum('jumlah_harga');
+
+
+        $model = new Invoice;
+        $model->jumlah_transaksi = $total_harga;
+        $model->kode_transaksi = Str::random(32);//memanggil sebuah string acak sepanjang 32 karakter
+        $model->customer_id = Auth::id();
+        $model->created_by = Auth::id();
+        $model->updated_by = Auth::id();
+        if($model->save()){ //jika invoice telah disimpan, maka simpan rincian invoice_barang
+            foreach($datas as $key=>$value){
+                $invoice_barang = new InvoiceBarang;
+                $invoice_barang->id_invoice = $model->id;
+                $invoice_barang->id_barang = $value->id_barang;
+                $invoice_barang->id_customer = $value->id_customer;
+                $invoice_barang->jumlah_barang = $value->jumlah_pesanan;
+                $invoice_barang->jumlah_harga = $value->jumlah_harga;
+                $invoice_barang->id_keranjang = $value->id;
+                $invoice_barang->status = 1;
+                $invoice_barang->created_by = Auth::id();
+                $invoice_barang->updated_by = Auth::id();
+                if($invoice_barang->save()){
+                    //jika barang telah berhasil masuk ke dalam rincian invoice barang
+                    //maka ubah status menjadi 2, agar daftar keranajng tersebut
+                    //tidak lagi tampil pada KERANJANG
+                    $value->status = 2;
+                    $value->save();
+                }
+            }
+        }
+        
+        return redirect('invoice/'.$model->id);
     }
 
     /**

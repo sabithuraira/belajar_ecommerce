@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Invoice;
+use App\Models\InvoiceBarang;
 use App\Http\Requests\InvoiceRequest;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,7 +72,14 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $model = Invoice::find($id);
+        //mengambil daftar invoice_barang sesuai deangan id invoice
+        $list_barang = InvoiceBarang::where('id_invoice', '=', $model->id)->get();
+        $model_invoice = new InvoiceBarang;
+
+        return view('invoice.show', compact(
+            'model', 'list_barang', 'model_invoice'
+        ));
     }
 
     /**
