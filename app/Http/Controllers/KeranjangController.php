@@ -24,8 +24,20 @@ class KeranjangController extends Controller
         //yang memiliki status = 1 (dia masih aktif, belum dipindahkan ke pembelian)
         //dan yang memiliki id customer sesuai dengan pengguna yang sedang login
         $datas = Keranjang::where('status', '=', 1)
+            ->select('keranjang.*', 'barang.created_by as penjual')
             ->where('id_customer', '=', Auth::id())
+            //digunakan untuk melakukan query dengan kondisi
+            //pada tabel relasi lain
+            // ->whereHas('barang', function($query) {
+            //     $query->where('kode_barang','=', 'PN001');
+            // })
+            //kode di bawah melakukan join pada suatu eloquent
+            //dimana kita bisa menggunakan attribut pada tabel relasi pada contoh di bawah
+            ->join('barang', 'barang.id', '=', 'keranjang.id_barang')
+            //contoh melakukan pengururan suatu data menggunakan field dari tabel relasi
+            ->orderBy('barang.created_by')
             ->get();
+        //gunakan dd untuk melihat detail suatu variabel
         $model = new Keranjang;
         return view('keranjang.index', compact(
             'datas', 'model'
@@ -38,24 +50,53 @@ class KeranjangController extends Controller
         //kita ambil terlebih semua keranjang yang dimiliki oleh user yang sedang login
         //dan memiliki status = 1 yang artinya masih hanya dalam keranjang
         $datas = Keranjang::where('status', '=', 1)
+            ->select('keranjang.*', 'barang.created_by as penjual')
             ->where('id_customer', '=', Auth::id())
+            ->join('barang', 'barang.id', '=', 'keranjang.id_barang')
+            ->orderBy('barang.created_by')
             ->get();
 
         //mengambil jumlah harga dari semua barang yang ada pada keranajng
-        $total_harga = Keranjang::where('status', '=', 1)
-            ->where('id_customer', '=', Auth::id())
-            ->sum('jumlah_harga');
+        // $total_harga = Keranjang::where('status', '=', 1)
+        //     ->where('id_customer', '=', Auth::id())
+        //     ->sum('jumlah_harga');
 
 
         $model = new Invoice;
-        $model->jumlah_transaksi = $total_harga;
+        $model->jumlah_transaksi = 0;
         $model->kode_transaksi = Str::random(32);//memanggil sebuah string acak sepanjang 32 karakter
         $model->customer_id = Auth::id();
         $model->created_by = Auth::id();
         $model->updated_by = Auth::id();
 
+        //digunakan untuk menangkap penjual terakhir yang ada pada seluruh list keranjang
+        $current_penjual = "";
+        $jumlah_invoice = 1;
+
         if($model->save()){ //jika invoice telah disimpan, maka simpan rincian invoice_barang
             foreach($datas as $key=>$value){
+                //kita harus tahu siapa user yang memiliki barang
+                $barang = Barang::find($value->id_barang); 
+                //variabel si penjual barang
+                $user_penjual = $barang->created_by;
+
+                //jika penjual pada keranjang barang terakhir berbeda dengan
+                //penjual saat ini, maka invoice harus dibedakan
+                //pada kode ini, kita akan membuat invoice baru
+                if($current_penjual!="" && $user_penjual!=$current_penjual){
+                    $model = new Invoice;
+                    $model->jumlah_transaksi = 0;
+                    $model->kode_transaksi = Str::random(32);//memanggil sebuah string acak sepanjang 32 karakter
+                    $model->customer_id = Auth::id();
+                    $model->created_by = Auth::id();
+                    $model->updated_by = Auth::id();
+                    if($model->save()){
+                        $jumlah_invoice++;
+                    }
+                }
+                
+                $current_penjual = $barang->created_by;
+
                 $invoice_barang = new InvoiceBarang;
                 $invoice_barang->id_invoice = $model->id;
                 $invoice_barang->id_barang = $value->id_barang;
@@ -66,25 +107,36 @@ class KeranjangController extends Controller
                 $invoice_barang->status = 1;
                 $invoice_barang->created_by = Auth::id();
                 $invoice_barang->updated_by = Auth::id();
+
+
                 if($invoice_barang->save()){
+                    //jumlah transaksi pada invoice secara default di set = 0
+                    //sehingga setiap menyimpan barang pada invoice_barang, kita akan jumlahkan 
+                    //jumlah transaksi sebelumnya, dengan harga barang pada invoice_barang saat ini
+                    $model->jumlah_transaksi = $model->jumlah_transaksi + $invoice_barang->jumlah_harga;
+                    $model->save();
+
                     //jika barang telah berhasil masuk ke dalam rincian invoice barang
                     //maka ubah status menjadi 2, agar daftar keranajng tersebut
                     //tidak lagi tampil pada KERANJANG
-                    $value->status = 2;
-                    $value->save();
+                    $keranjang = Keranjang::find($value->id);
+                    $keranjang->status = 2;
+                    $keranjang->save();
 
-                    $barang = Barang::find($value->id_barang); 
                     $barang->jumlah = $barang->jumlah - $value->jumlah_pesanan;
                     $barang->save();
                 }
             }
         }
         
-        return redirect('invoice/'.$model->id);
+        if($jumlah_invoice==1)
+            return redirect('invoice/'.$model->id);
+        else
+            return redirect('invoice');
     }
 
     public function beli_sebagian(){
-        
+
     }
 
     /**

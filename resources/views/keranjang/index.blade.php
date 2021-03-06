@@ -25,6 +25,7 @@ Daftar Keranjang
                     <th>{{ $model->attributes()['jumlah_pesanan'] }}</th>
                     <th>{{ $model->attributes()['jumlah_harga'] }}</th>
                     <th>{{ $model->attributes()['id_customer'] }}</th>
+                    <th>Penjual</th>
                     <th class="text-center" colspan="2">Aksi</th>
                 </tr>
                 @foreach($datas as $key=>$value)
@@ -44,6 +45,7 @@ Daftar Keranjang
                         <td>{{ $value->jumlah_pesanan }}</td>
                         <td>{{ $value->jumlah_harga }}</td>
                         <td>{{ $value->customer->name }}</td>
+                        <td>{{ $value->penjual }}</td>
                         <!-- <td class="text-center">
                             <a class="btn btn-success" href="{{ url('keranjang/'.$value->id.'/pindah_ke_invoice') }}">Jadikan Pembelian</a>
                         </td> -->
