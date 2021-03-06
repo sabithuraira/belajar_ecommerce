@@ -38,9 +38,25 @@ class KeranjangController extends Controller
             ->orderBy('barang.created_by')
             ->get();
         //gunakan dd untuk melihat detail suatu variabel
+        //dd($datas)
+
+        //variabel untuk menyimpan informasi apakah ada barang yang kosong
+        $apakahAdaKosong = 0;
+        //ini kode untuk mengecek apakaha ada barang yang stock 0
+        //satu per satu dengan foreach
+        foreach($datas as $value){
+            //memanggil data pada tabel barang sesuai dengan id_barang
+            $barang = Barang::find($value->id_barang);
+            if($barang->jumlah==0){
+                $apakahAdaKosong = 1;
+                break;
+            }
+        }
+
         $model = new Keranjang;
+        $modelBarang = new Barang;
         return view('keranjang.index', compact(
-            'datas', 'model'
+            'datas', 'model', 'apakahAdaKosong', 'modelBarang'
         ));
     }
 
