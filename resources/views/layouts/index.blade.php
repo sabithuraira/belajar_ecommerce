@@ -188,6 +188,17 @@
                 </li>
               </ul>
             </li>
+
+            
+            @hasanyrole('pedagang')
+              <li class="nav-item">
+                <a href="{{ url('invoice/penjualan/barang') }}" class="nav-link">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>Penjualan</p>
+                </a>
+              </li>
+            @endhasanyrole
+
             <li class="nav-item">
               <a href="{{ url('barang') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>

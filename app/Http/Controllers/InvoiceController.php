@@ -98,7 +98,7 @@ class InvoiceController extends Controller
     }
 
     public function penjualan(){
-        $datas = InvoiceBarang::where('status', '=', 2)
+        $datas = InvoiceBarang::where('status', '>=', 2)
             ->select('invoice_barang.*')
             // ->where('id_customer', '=', Auth::id())
             ->join('barang', 'barang.id', '=', 'invoice_barang.id_barang')
@@ -110,6 +110,14 @@ class InvoiceController extends Controller
         return view('invoice.penjualan', compact(
             'datas', 'model_invoice'
         ));
+    }
+
+    public function rubah_status(Request $request){
+        $model = InvoiceBarang::find($request->get('id_barang'));
+        $model->status = $request->get('status');
+        
+        $model->save();
+        return redirect('invoice/penjualan/barang');
     }
 
     /**

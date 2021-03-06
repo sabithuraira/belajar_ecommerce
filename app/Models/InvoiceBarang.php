@@ -27,8 +27,19 @@ class InvoiceBarang extends Model
             'jumlah_barang' => 'Jumlah Barang',
             'jumlah_harga' => 'Jumlah Harga',
             'id_customer' => 'Customer',
+            'status' => 'Status',
             'created_at' => 'Dibuat oleh',
             'updated_at' => 'Diperbaharui oleh',
+        ];
+    }
+
+    public function getListStatusAttribute(){
+        return [
+            ''=> '', //karena metode pembayaran bisa kosong, maka isian ini akan mengakomodir tampilan jika isinya kosong.
+            1 => 'Dipesan',
+            2 => 'Telah dibayar pelanggan',
+            3 => 'Sudah dikirim penjual',
+            4 => 'Sudah sampai',
         ];
     }
 }
