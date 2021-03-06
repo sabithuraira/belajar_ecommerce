@@ -65,12 +65,13 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/keranjang/{id}/pindah_ke_invoice', [KeranjangController::class, 'pindahKeInvoice']);
     
     Route::get('/barang/{id}/print_pdf', [BarangController::class, 'print_pdf']);
+    Route::resource('barang', BarangController::class)->only('index');
 });
 
 //controller atau fungsi di bawah group ini
 //hanya bisa diakses oleh user dengan level superadmin atau pedagang
 Route::group(['middleware' => ['role:superadmin|pedagang']], function () {   
-    Route::resource('barang', BarangController::class);
+    Route::resource('barang', BarangController::class)->except('index');
 }); 
 
 //yang bisa mengakses routes di bawah hanya user yang telah login dan memiliki tipe superadmin
