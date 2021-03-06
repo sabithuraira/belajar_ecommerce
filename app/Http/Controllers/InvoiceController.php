@@ -9,6 +9,7 @@ use App\Models\Keranjang;
 use App\Models\Barang;
 use App\Http\Requests\InvoiceRequest;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class InvoiceController extends Controller
 {
@@ -82,6 +83,18 @@ class InvoiceController extends Controller
         return view('invoice.show', compact(
             'model', 'list_barang', 'model_invoice'
         ));
+    }
+
+    public function print_pdf($id)
+    {
+        $model = Invoice::find($id);
+        $list_barang = InvoiceBarang::where('id_invoice', '=', $model->id)->get();
+        $model_invoice = new InvoiceBarang;
+
+        $pdf = PDF::loadview('invoice.print_pdf', compact(
+            'model', 'list_barang', 'model_invoice'
+        ));
+    	return $pdf->download($model->kode_transaksi.'.pdf');
     }
 
     /**

@@ -6,6 +6,12 @@ Detail Invoice
 
 @section('content')
 <div class="row clearfix">
+    
+    <div class="col-sm-12">  
+        <a href="{{ url('invoice/'.$model->id.'/print_pdf') }}" class="btn btn-success">Print PDF</a> 
+        <a href="{{ url('invoice/print_pdf') }}" class="btn btn-success">Pembayaran</a> 
+    </div>
+    <br/>
     <div class="col-md-12">
         <div class="form-group">
             <label>{{ $model->attributes()['jumlah_transaksi'] }}:</label>    

@@ -58,6 +58,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::resource('keranjang', KeranjangController::class)->except('show');
     Route::get('keranjang/beli_semua', [KeranjangController::class, 'beli_semua']);
     Route::post('keranjang/beli_sebagian', [KeranjangController::class, 'beli_sebagian']);
+    Route::get('/invoice/{id}/print_pdf', [InvoiceController::class, 'print_pdf']);
     
     Route::get('/barang/{id}/add_review', [BarangController::class, 'add_review']);
     Route::post('/barang/{id}/store_review', [BarangController::class, 'store_review']);
