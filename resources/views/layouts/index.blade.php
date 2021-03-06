@@ -276,11 +276,11 @@
 
           @if(auth()->check())
             <li class="nav-item">
-              <form action="{{ url('logout') }}" method="post">
+              <form action="{{ url('logout') }}" method="post" id="logout">
                   @csrf
-                  <button type="submit" class='nav-link btn'>
+                  <a href="javascript:{}" onclick="document.getElementById('logout').submit();" class='nav-link'>
                     <i class="nav-icon fas fa-th"></i><p>Logout</p>
-                  </button>
+                  </a>
               </form>
             </li>
           @else
