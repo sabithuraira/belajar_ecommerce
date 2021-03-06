@@ -1,18 +1,12 @@
 @extends('layouts.index')
 
 @section('title')
-Detail Invoice
+Pembayaran Invoice
 @endsection
 
 @section('content')
 <div class="row clearfix">
-    
-    <div class="col-sm-12">  
-        <a href="{{ url('invoice/'.$model->id.'/print_pdf') }}" class="btn btn-success">Print PDF</a> 
-        <a href="{{ url('invoice/'.$model->id.'/pembayaran') }}" class="btn btn-success">Pembayaran</a> 
-    </div>
-    <br/>
-    <div class="col-md-12">
+    <div class="col-md-6">
         <div class="form-group">
             <label>{{ $model->attributes()['jumlah_transaksi'] }}:</label>    
             <input type="text" class="form-control {{($errors->first('jumlah_transaksi') ? ' parsley-error' : '')}}" name="jumlah_transaksi" disabled value="{{ old('jumlah_transaksi', $model->jumlah_transaksi) }}">
@@ -24,8 +18,29 @@ Detail Invoice
             
         </div>
     </div>
-
     
+    <div class="col-md-6">
+        <form method="post" action="{{ url('invoice/'.$model->id.'/pembayaran') }}" enctype="multipart/form-data">
+        @csrf
+            <div class="form-group">
+                <label>{{ $model->attributes()['metode_pembayaran'] }}:</label>    
+                <input type="text" class="form-control {{($errors->first('metode_pembayaran') ? ' parsley-error' : '')}}" name="metode_pembayaran" value="{{ old('metode_pembayaran', $model->metode_pembayaran) }}">
+            </div>
+            
+            <div class="form-group">
+                <label>{{ $model->attributes()['ongkir'] }}:</label>    
+                <input type="text" class="form-control {{($errors->first('ongkir') ? ' parsley-error' : '')}}" name="ongkir" value="{{ old('ongkir', $model->ongkir) }}">
+            </div>
+            
+            <div class="form-group">
+                <label>{{ $model->attributes()['kurir'] }}:</label>    
+                <input type="text" class="form-control {{($errors->first('kurir') ? ' parsley-error' : '')}}" name="kurir" value="{{ old('kurir', $model->kurir) }}">
+            </div>
+
+            <button type="submit">Simpan</button>
+        </form>
+    </div>
+
     
     <div class="col-sm-12">
         <p>Daftar Pesanan</p>

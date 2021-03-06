@@ -97,18 +97,35 @@ class InvoiceController extends Controller
     	return $pdf->download($model->kode_transaksi.'.pdf');
     }
 
+    public function penjualan(){
+        $datas = InvoiceBarang::where('status', '=', 2)
+            ->select('invoice_barang.*')
+            // ->where('id_customer', '=', Auth::id())
+            ->join('barang', 'barang.id', '=', 'invoice_barang.id_barang')
+            ->where('barang.created_by', '=', Auth::id())
+            // ->orderBy('barang.created_by')
+            ->get();
+
+        $model_invoice = new InvoiceBarang;
+        return view('invoice.penjualan', compact(
+            'datas', 'model_invoice'
+        ));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function pembayaran($id)
     {
-        // $model = Invoice::find($id);
-        // return view('invoice.edit', compact(
-        //     'model'
-        // ));
+        $model = Invoice::find($id);
+        $list_barang = InvoiceBarang::where('id_invoice', '=', $model->id)->get();
+        $model_invoice = new InvoiceBarang;
+        return view('invoice.pembayaran', compact(
+            'model', 'list_barang', 'model_invoice'
+        ));
     }
 
     /**
@@ -118,22 +135,22 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(InvoiceRequest $request, $id)
+    public function pembayaran_store(Request $request, $id)
     {
-        // $model = Invoice::find($id);
-        // $model->jumlah_transaksi = $request->get('jumlah_transaksi');
-        // $model->metode_pembayaran = $request->get('metode_pembayaran');
-        // $model->kode_transaksi = $request->get('kode_transaksi');
-        // $model->kurir  = $request->get('kurir'  );
-        // $model->ongkir = $request->get('ongkir');
-        // $model->no_resi = $request->get('no_resi');
-        // $model->id_keranjang = $request->get('id_keranjang');
-        // $model->waktu_sampai = $request->get('tanggal_sampai').' '.$request->get('jam_sampai');
-        // $model->customer_id = $request->get('customer_id');
-        // $model->updated_by =  Auth::id();
-        // $model->save();
+        $model = Invoice::find($id);
+        $model->metode_pembayaran = $request->get('metode_pembayaran');
+        $model->ongkir = $request->get('ongkir');
+        $model->kurir  = $request->get('kurir');
+        $model->updated_by =  Auth::id();
+        if($model->save()){
+            $list_barang = InvoiceBarang::where('id_invoice', '=', $model->id)->get();
+            foreach($list_barang as $value){
+                $value->status = 2;
+                $value->save();
+            }
+        }
 
-        // return redirect('invoice');
+        return redirect('invoice');
     }
 
     /**

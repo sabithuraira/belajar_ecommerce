@@ -55,6 +55,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('/penerbangan/create_many', [PenerbanganController::class, 'create_many']);
     Route::post('/penerbangan/store_many', [PenerbanganController::class, 'store_many']);
     Route::resource('invoice', InvoiceController::class);
+    Route::get('/invoice/{id}/pembayaran', [InvoiceController::class, 'pembayaran']);
+    Route::post('/invoice/{id}/pembayaran', [InvoiceController::class, 'pembayaran_store']);
+    Route::get('/invoice/penjualan/barang', [InvoiceController::class, 'penjualan']);
+
     Route::resource('keranjang', KeranjangController::class)->except('show');
     Route::get('keranjang/beli_semua', [KeranjangController::class, 'beli_semua']);
     Route::post('keranjang/beli_sebagian', [KeranjangController::class, 'beli_sebagian']);
