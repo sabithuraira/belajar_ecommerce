@@ -5,7 +5,7 @@ Daftar Keranjang
 @endsection
 
 @section('content')
-    <form method="post" action="{{ url('keranjang/beli_sebagian') }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ url('keranjang/beli_sebagian') }}" enctype="multipart/form-data">
         @csrf
         <div class="col-sm-12">  
             @if($apakahAdaKosong!=1)
@@ -16,7 +16,7 @@ Daftar Keranjang
                 <a href="{{ url('keranjang/beli_semua') }}" class="btn btn-success disabled" >Beli Semua</a>
             @endif
             <!-- Ketika pengguna memilih tombol ini semua barang yang ada di keranjang, akan langsung masuk ke invoice -->
-            <buttton type="submit" class="btn btn-success">Beli yang dipilih</buttton>
+            <button type="submit" class="btn btn-success">Beli yang dipilih</button>
         </div>
         <br/>
         
@@ -43,7 +43,7 @@ Daftar Keranjang
                         <td>{{ $key+1 }}</td>
                         <!-- Jika barang kosong, maka tampilan terlihat disable -->
                         @if($isKosong==1)
-                            <td><input type="checkbox" name="keranjang" value="{{ $value->id }}" disabled></td>
+                            <td><input type="checkbox" name="keranjang[]" value="{{ $value->id }}" disabled></td>
                             <td class="text-muted">{{ $value->barang->kode_barang }} - {{ $value->barang->nama }}</td>
                             <td class="text-muted">{{ $value->jumlah_pesanan }}</td>
                             <td class="text-muted">{{ $value->jumlah_harga }}</td>
@@ -55,14 +55,14 @@ Daftar Keranjang
                             
                             <td class="text-center"></td>
                             <td class="text-center">
-                                <form action="{{ url('keranjang/'.$value['id']) }}" method="post">
+                                <!-- <form action="{{ url('keranjang/'.$value['id']) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <button type="submit" class='btn btn-danger'>Delete</button>
-                                </form>
+                                </form> -->
                             </td>
                         @else
-                            <td><input type="checkbox" name="keranjang" value="{{ $value->id }}"></td>
+                            <td><input type="checkbox" name="keranjang[]" value="{{ $value->id }}"></td>
                             <!---  
                                 pada kode berikut, kita menampilkan field dari relasi barang
                                 - sebelumnya telah dibuat fungsi barang(), sebagai relasi ke tabel barang
@@ -83,11 +83,11 @@ Daftar Keranjang
                             
                             <td class="text-center"><a class="btn btn-primary" href="{{ url('keranjang/'.$value->id.'/edit/') }}">Update</a></td>
                             <td class="text-center">
-                                <form action="{{ url('keranjang/'.$value['id']) }}" method="post">
+                                <!-- <form action="{{ url('keranjang/'.$value['id']) }}" method="post">
                                     @csrf
                                     <input name="_method" type="hidden" value="DELETE">
                                     <button type="submit" class='btn btn-danger'>Delete</button>
-                                </form>
+                                </form> -->
                             </td>
                         @endif
                         

@@ -151,8 +151,86 @@ class KeranjangController extends Controller
             return redirect('invoice');
     }
 
-    public function beli_sebagian(){
+    public function beli_sebagian(Request $request){
+        // dd($request->keranjang);
+        //$request->keranjang akan mengembalikan nilai dalam bentuk array
+        //yang meruapakan array dari checkbox yang telah dipilih
+        if($request->keranjang!=null){
+            $model = new Invoice;
+            $model->jumlah_transaksi = 0;
+            $model->kode_transaksi = Str::random(32);//memanggil sebuah string acak sepanjang 32 karakter
+            $model->customer_id = Auth::id();
+            $model->created_by = Auth::id();
+            $model->updated_by = Auth::id();
 
+            //digunakan untuk menangkap penjual terakhir yang ada pada seluruh list keranjang
+            $current_penjual = "";
+            $jumlah_invoice = 1;
+
+            if($model->save()){ //jika invoice telah disimpan, maka simpan rincian invoice_barang
+                foreach($request->keranjang as $value){
+                    $keranjang = Keranjang::find($value);
+                    $barang = Barang::find($keranjang->id_barang); 
+                    //variabel si penjual barang
+                    $user_penjual = $barang->created_by;
+
+                    //jika penjual pada keranjang barang terakhir berbeda dengan
+                    //penjual saat ini, maka invoice harus dibedakan
+                    //pada kode ini, kita akan membuat invoice baru
+                    if($current_penjual!="" && $user_penjual!=$current_penjual){
+                        $model = new Invoice;
+                        $model->jumlah_transaksi = 0;
+                        $model->kode_transaksi = Str::random(32);//memanggil sebuah string acak sepanjang 32 karakter
+                        $model->customer_id = Auth::id();
+                        $model->created_by = Auth::id();
+                        $model->updated_by = Auth::id();
+                        if($model->save()){
+                            $jumlah_invoice++;
+                        }
+                    }
+                    
+                    $current_penjual = $barang->created_by;
+
+                    $invoice_barang = new InvoiceBarang;
+                    $invoice_barang->id_invoice = $model->id;
+                    $invoice_barang->id_barang = $keranjang->id_barang;
+                    $invoice_barang->id_customer = $keranjang->id_customer;
+                    $invoice_barang->jumlah_barang = $keranjang->jumlah_pesanan;
+                    $invoice_barang->jumlah_harga = $keranjang->jumlah_harga;
+                    $invoice_barang->id_keranjang = $keranjang->id;
+                    $invoice_barang->status = 1;
+                    $invoice_barang->created_by = Auth::id();
+                    $invoice_barang->updated_by = Auth::id();
+
+
+                    if($invoice_barang->save()){
+                        //jumlah transaksi pada invoice secara default di set = 0
+                        //sehingga setiap menyimpan barang pada invoice_barang, kita akan jumlahkan 
+                        //jumlah transaksi sebelumnya, dengan harga barang pada invoice_barang saat ini
+                        $model->jumlah_transaksi = $model->jumlah_transaksi + $invoice_barang->jumlah_harga;
+                        $model->save();
+
+                        //jika barang telah berhasil masuk ke dalam rincian invoice barang
+                        //maka ubah status menjadi 2, agar daftar keranajng tersebut
+                        //tidak lagi tampil pada KERANJANG
+                        $keranjang->status = 2;
+                        $keranjang->save();
+
+                        $barang->jumlah = $barang->jumlah - $keranjang->jumlah_pesanan;
+                        $barang->save();
+                    }
+                }
+            }
+            
+            if($jumlah_invoice==1)
+                return redirect('invoice/'.$model->id);
+            else
+                return redirect('invoice');
+        }
+        else{
+
+            return redirect('keranjang');
+        }
     }
 
     /**
