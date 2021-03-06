@@ -42,7 +42,9 @@ Daftar Barang
                         <td>{{ $value->jumlah }}</td>
                         <td>{{ $value->createdBy->name }}</td>
                         <td class="text-center">
-                            <a href="#" class="btn btn-primary" data-id="{{ $value->id }}" v-on:click="setIdBarang"  id="add-utama">Masukkan ke Keranjang</a>
+                            @if($value->jumlah>0)
+                                <a href="#" class="btn btn-primary" data-id="{{ $value->id }}" v-on:click="setIdBarang"  id="add-utama">Masukkan ke Keranjang</a>
+                            @endif
                         </td>
                         <td class="text-center"><a class="btn btn-primary" href="{{ url('barang/'.$value->id.'/add_review/') }}">Review</a></td>
                         <td class="text-center"><a class="btn btn-primary" href="{{ url('barang/'.$value->id.'/edit/') }}">Update</a></td>

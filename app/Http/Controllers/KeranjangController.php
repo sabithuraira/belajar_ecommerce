@@ -53,6 +53,7 @@ class KeranjangController extends Controller
         $model->customer_id = Auth::id();
         $model->created_by = Auth::id();
         $model->updated_by = Auth::id();
+
         if($model->save()){ //jika invoice telah disimpan, maka simpan rincian invoice_barang
             foreach($datas as $key=>$value){
                 $invoice_barang = new InvoiceBarang;
@@ -72,7 +73,7 @@ class KeranjangController extends Controller
                     $value->status = 2;
                     $value->save();
 
-                    $barang = Barang::find($value->id_barang);
+                    $barang = Barang::find($value->id_barang); 
                     $barang->jumlah = $barang->jumlah - $value->jumlah_pesanan;
                     $barang->save();
                 }
@@ -80,6 +81,10 @@ class KeranjangController extends Controller
         }
         
         return redirect('invoice/'.$model->id);
+    }
+
+    public function beli_sebagian(){
+        
     }
 
     /**
