@@ -242,7 +242,7 @@
 
             <li class="nav-item has-treeview">
               <a href="#" class="nav-link">
-                <i class="nav-icon"></i>
+                <i class="nav-icon fas fa-th"></i>
                 <p>
                   Roles & Permission
                   <i class="right fas fa-angle-left"></i>
@@ -278,7 +278,7 @@
             <li class="nav-item">
               <form action="{{ url('logout') }}" method="post">
                   @csrf
-                  <button type="submit" class='nav-link'>
+                  <button type="submit" class='nav-link btn'>
                     <i class="nav-icon fas fa-th"></i><p>Logout</p>
                   </button>
               </form>
